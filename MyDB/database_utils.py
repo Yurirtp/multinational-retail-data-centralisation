@@ -28,7 +28,7 @@ class DatabaseConnector:
         df.to_sql(table_name, con=self.engine, if_exists="replace", index=False)
 
 
-db = DatabaseConnector("local_db.yaml")
-print(db.creds)
+#db = DatabaseConnector("local_db.yaml")
+#print(db.creds)
 
 
