@@ -1,5 +1,4 @@
 #%%
-from pandas import pd 
 from data_extraction import DataExtractor
 from database_utils import DatabaseConnector
 from data_cleaning import DataCleaning
@@ -14,7 +13,7 @@ if __name__ == "__main__":
     cleaned_df = dc.clean_user_data(original_df)
 
     # Step 3: Upload the cleaned data to Sales_Data database
-    connector = DatabaseConnector()
+    connector = DatabaseConnector("local_db.yaml")
     connector.upload_to_db(cleaned_df, 'dim_users')
 
 
