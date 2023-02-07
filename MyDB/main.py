@@ -17,3 +17,5 @@ if __name__ == "__main__":
     connector.upload_to_db(cleaned_df, 'dim_users')
 
 
+# pip install --force-reinstall -v SQLAlchemy==1.4.46
+#create a new enviornment
