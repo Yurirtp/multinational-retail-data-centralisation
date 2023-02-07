@@ -4,8 +4,8 @@ from database_utils import DatabaseConnector
 
 class DataExtractor:
     def __init__(self):
-        self.connector = DatabaseConnector()
-        
+        self.connector = DatabaseConnector("db_creds.yaml")
+
     def extract_user_data(self):
         table_name = "sales_data"
         df = self.read_rds_table(table_name)
