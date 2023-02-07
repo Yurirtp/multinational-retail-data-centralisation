@@ -1,6 +1,5 @@
 #%%
-
-import pandas as pd
+from pandas import pd 
 from data_extraction import DataExtractor
 from database_utils import DatabaseConnector
 from data_cleaning import DataCleaning
@@ -17,3 +16,5 @@ if __name__ == "__main__":
     # Step 3: Upload the cleaned data to Sales_Data database
     connector = DatabaseConnector()
     connector.upload_to_db(cleaned_df, 'dim_users')
+
+
