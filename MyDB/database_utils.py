@@ -1,6 +1,10 @@
 #%%
 import yaml
 import sqlalchemy as db
+import yaml
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
+import pandas as pd
 
 class DatabaseConnector:
     def __init__(self, db_creds):
@@ -29,7 +33,7 @@ class DatabaseConnector:
         df.to_sql(table_name, con=self.engine, if_exists="replace", index=False)
 
 
-#db = DatabaseConnector("local_db.yaml")
-#print(db.creds)
+#dab = DatabaseConnector("local_db.yaml")
+#dab.read_db_creds()
 
 
