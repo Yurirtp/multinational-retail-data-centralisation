@@ -1,5 +1,5 @@
 RDS_HOST: localhost
-RDS_PASSWORD: 
+RDS_PASSWORD: 4Fkjt317u
 RDS_USER: postgres
 RDS_DATABASE: sales_data
 RDS_PORT: 5432
