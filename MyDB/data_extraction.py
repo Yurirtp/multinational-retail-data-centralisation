@@ -1,5 +1,6 @@
 #%%
 import pandas as pd
+import tabula
 from database_utils import DatabaseConnector
 
 class DataExtractor:
@@ -15,6 +16,15 @@ class DataExtractor:
         table_name = "legacy_users"
         df = self.read_rds_table(table_name)
         return df
+
+    def retrieve_pdf_data(self, url: str):
+        '''takes PDF url as input and outputs PDF data as table'''
+        dfs =tabula.read_pdf(url,pages='all')
+        card_data=pd.concat(dfs,ignore_index=True)
+        # print('number of dataframes created:')
+        # print(len(dfs))
+        return card_data
+
 
 # class DataExtractor:
 #     def __init__(self, db_connector):
