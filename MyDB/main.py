@@ -1,5 +1,6 @@
 #%%
 import yaml
+import tabula
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 import data_cleaning as dc
@@ -27,6 +28,12 @@ def upload_user_table(db_creds_file, local_creds_file, data, table_name):
     db_conn.upload_to_db(cleaned_df, table_name)
     print("User data has been uploaded successfully!")
 
+def upload_card_details():
+    pdf_link='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
+    db_conn = DatabaseConnector(pdf_link)
+    data_extractor = DataExtractor(db_conn)
+    
+
 
 
 db_creds_file = 'C:\\Users\\yurir\\Desktop\\AiCore\\Projects\\Github\\multinational-retail-data-centralisation\\MyDB\\db_creds.yaml'
@@ -35,6 +42,11 @@ table_name = 'dim_users'
 # Load user data from AWS cloud into a DataFrame
 user_data = get_user_table(db_creds_file)
 upload_user_table(db_creds_file, local_creds_file, user_data, table_name)
+
+pdf_link='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
+card_data = DataExtractor.retrieve_pdf_data(pdf_link)
+clean_card_data = DataCleaning.clean_card_data(card_data)
+upload_card_details(card_data, local_creds_file, clean_card_data, table_name='dim_card_details')
 
 
 # def upload_user_table(local_yaml_file,data, table_name):
