@@ -16,7 +16,6 @@ def get_user_table(db_yaml_file):
     user_db = data_extractor.read_rds_table('legacy_users')
     return user_db
 
-
 def upload_user_table(db_creds_file, local_creds_file, data, table_name):
     db_conn = DatabaseConnector(db_creds_file)
     data_extractor = DataExtractor(db_conn)
@@ -28,11 +27,13 @@ def upload_user_table(db_creds_file, local_creds_file, data, table_name):
     db_conn.upload_to_db(cleaned_df, table_name)
     print("User data has been uploaded successfully!")
 
-def upload_card_details():
-    pdf_link='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
-    db_conn = DatabaseConnector(pdf_link)
+def get_and_upload_card_data(pdf_link, local_creds_file, table_name):
+    db_conn = DatabaseConnector(local_creds_file)
     data_extractor = DataExtractor(db_conn)
-    
+    card_data = data_extractor.retrieve_pdf_data(pdf_link)
+    cleaned_cd_data = DataCleaning().clean_card_data(card_data)  # add parentheses here to create an instance of the DataCleaning class
+    db_conn.upload_to_db(cleaned_cd_data, table_name=table_name)
+    print("Card data has been uploaded successfully!")
 
 
 
@@ -44,9 +45,7 @@ user_data = get_user_table(db_creds_file)
 upload_user_table(db_creds_file, local_creds_file, user_data, table_name)
 
 pdf_link='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
-card_data = DataExtractor.retrieve_pdf_data(pdf_link)
-clean_card_data = DataCleaning.clean_card_data(card_data)
-upload_card_details(card_data, local_creds_file, clean_card_data, table_name='dim_card_details')
+get_and_upload_card_data(pdf_link, local_creds_file, 'dim_card_details')
 
 
 # def upload_user_table(local_yaml_file,data, table_name):
