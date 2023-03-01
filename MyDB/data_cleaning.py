@@ -37,6 +37,19 @@ class DataCleaning:
         card_data_cleaned = card_data.iloc[null_map.values]
         return card_data_cleaned
 
+    def clean_store_data(self, stores_data):
+        df = pd.DataFrame(stores_data)
+        '''Clean Staff numbers'''
+        # Copy the DataFrame to avoid SettingWithCopyWarning
+        df_cleaned = df.copy()
+        # Convert staff_numbers column to numeric and drop non-numeric values
+        df_cleaned = df.drop('lat', axis=1)
+        df_cleaned['staff_numbers'] = pd.to_numeric(df_cleaned['staff_numbers'], errors='coerce')
+        df_cleaned = df_cleaned.dropna(subset=['staff_numbers'])
+        df_cleaned['staff_numbers'] = df_cleaned['staff_numbers'].astype(int)
+        df_cleaned['continent'] = df_cleaned['continent'].replace('eeEurope', 'Europe').replace('eeAmerica', 'America')
+        return df_cleaned
+
 
 
 
