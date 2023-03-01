@@ -35,6 +35,16 @@ def get_and_upload_card_data(pdf_link, local_creds_file, table_name):
     db_conn.upload_to_db(cleaned_cd_data, table_name=table_name)
     print("Card data has been uploaded successfully!")
 
+def get_and_upload_store_data(get_stores_endpoint,API_key,local_creds_file, table_name):
+    db_conn = DatabaseConnector(local_creds_file)
+    data_extractor = DataExtractor(db_conn)
+    num_stores = data_extractor.list_number_of_stores()
+    stores_data = data_extractor.retrieve_store_data(num_stores, get_stores_endpoint,API_key)
+    cleaned_stores_data = DataCleaning().clean_store_data(stores_data)
+    db_conn.upload_to_db(cleaned_stores_data, table_name=table_name)
+    print("Stores data has been uploaded successfully!")
+
+
 
 
 db_creds_file = 'C:\\Users\\yurir\\Desktop\\AiCore\\Projects\\Github\\multinational-retail-data-centralisation\\MyDB\\db_creds.yaml'
@@ -47,6 +57,10 @@ upload_user_table(db_creds_file, local_creds_file, user_data, table_name)
 pdf_link='https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf'
 get_and_upload_card_data(pdf_link, local_creds_file, 'dim_card_details')
 
+ 
+API_key={'x-api-key':'yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX'}
+get_stores_endpoint='https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/' 
+get_and_upload_store_data(get_stores_endpoint, API_key,local_creds_file, 'dim_store_details')
 
 # def upload_user_table(local_yaml_file,data, table_name):
 # local_creds = DatabaseConnector(db_creds=local_yaml_file).read_db_creds()
