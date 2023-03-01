@@ -2,6 +2,7 @@
 import pandas as pd
 import tabula
 from database_utils import DatabaseConnector
+import requests
 
 class DataExtractor:
     def __init__(self, db_connector):
@@ -24,6 +25,27 @@ class DataExtractor:
         # print('number of dataframes created:')
         # print(len(dfs))
         return card_data
+
+    def list_number_of_stores(self):
+        headers = {
+            "x-api-key": "yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX"
+        }
+        response = requests.get("https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores", headers=headers)
+        return response.json()["number_stores"]
+
+
+    def retrieve_store_data(self,number_stores,retrieve_store_endpoint,header):
+        '''take in endpoint and API_key and returns a dataframe of all stores information'''
+        stores_data = []
+        for i in range(number_stores):
+            store_url = retrieve_store_endpoint+str(i)
+            try:
+                response = requests.get(store_url, headers=header)
+            except:
+                print("there was an error!")    
+            stores_data.append(response.json())
+        df = pd.DataFrame(stores_data)
+        return df        
 
 
 # class DataExtractor:
